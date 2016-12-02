@@ -6,10 +6,21 @@ const Artists = (props) => {
     const artists = props.artists;
 
     return (
-
-        <h1>Hi</h1>
+        <div>
+        <h3>Artists</h3>
+            <div className="list-group">
+            {
+                props.artists.map(artist => {
+                    return (
+                        <div className="list-group-item" key={artist.id}>
+                        <Link to='#'>{ artist.name }</Link>
+                        </div>
+                    )
+                })
+            }
+            </div>
+        </div>
     )
-
 
 };
 
