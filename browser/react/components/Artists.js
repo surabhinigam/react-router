@@ -13,7 +13,7 @@ const Artists = (props) => {
                 props.artists.map(artist => {
                     return (
                         <div className="list-group-item" key={artist.id}>
-                        <Link to='#'>{ artist.name }</Link>
+                        <Link to={`/artists/${artist.id}`}>{ artist.name }</Link>
                         </div>
                     )
                 })

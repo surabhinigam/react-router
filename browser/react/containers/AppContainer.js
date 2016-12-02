@@ -9,7 +9,7 @@ import Album from '../components/Album';
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
 
-import { convertAlbum, convertAlbums, skip } from '../utils';
+import { convertAlbum, convertAlbums, convertSong, skip } from '../utils';
 
 export default class AppContainer extends Component {
 
@@ -22,6 +22,7 @@ export default class AppContainer extends Component {
         this.next = this.next.bind(this);
         this.prev = this.prev.bind(this);
         this.selectAlbum = this.selectAlbum.bind(this);
+        this.selectArtist = this.selectArtist.bind(this);
     }
 
     componentDidMount () {
@@ -112,6 +113,30 @@ export default class AppContainer extends Component {
         })});
     }
 
+    selectArtist (artistId) {
+        const p1 = axios.get(`/api/artists/${artistId}`)
+                    .then(res => res.data);
+
+        const p2 = axios.get(`/api/artists/${artistId}/albums`)
+                    .then(res => res.data);
+
+        const p3 = axios.get(`/api/artists/${artistId}/songs`)
+                    .then(res => res.data);
+
+        Promise.all([p1, p2, p3])
+         .then((results) => {
+            let artist = results[0];
+            let albums = results[1];
+            let songs = results[2];
+            console.log("results: ", results);
+            songs = songs.map(function(song){
+              return convertSong(song);
+            })
+            this.setState({selectedArtist: artist, albums: convertAlbums(albums), currentSongList: songs});
+        });
+    }
+
+
 
     render () {
         return (
@@ -135,7 +160,14 @@ export default class AppContainer extends Component {
                     selectAlbum: this.selectAlbum, // note that this.selectAlbum is a method, and this.state.selectedAlbum is the chosen album
 
                     // Artists (plural)
-                    artists: this.state.artists
+                    artists: this.state.artists,
+
+                    //Artist (singular)
+                    artist: this.state.selectedArtist,
+                    selectArtist: this.selectArtist,
+                    songs: this.state.currentSongList
+
+
                 })
                 : null
             }
