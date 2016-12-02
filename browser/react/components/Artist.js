@@ -22,7 +22,10 @@ export default class Artist extends Component {
 
     render(){
         return (
-            <h1>Hello</h1>
+            <div>
+            <Albums albums={this.albums}/>
+            <Songs songs={this.songs} currentSong={this.currentSong} isPlaying={this.isPlaying} toggleOne={this.toggleOne} />
+            </div>
         );
     }
 }
