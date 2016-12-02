@@ -3,6 +3,7 @@ import Songs from '../components/Songs';
 import Albums from '../components/Albums';
 import Album from '../components/Album';
 import initialState from '../initialState';
+import { Link } from 'react-router';
 
 export default class Artist extends Component {
     constructor (props) {
@@ -23,9 +24,13 @@ export default class Artist extends Component {
     render(){
         return (
             <div>
-            <Albums albums={this.albums}/>
-            <Songs songs={this.songs} currentSong={this.currentSong} isPlaying={this.isPlaying} toggleOne={this.toggleOne} />
-            </div>
+  				<h3>{ this.props.artist.name }</h3>
+			  	<ul className="nav nav-tabs">
+			    <li><Link to={`/artists/${this.props.artist.id}/albums`}>ALBUMS</Link></li>
+			    <li><Link to={`/artists/${this.props.artist.id}/songs`}>SONGS</Link></li>
+			  </ul>
+			</div>
+
         );
     }
 }
